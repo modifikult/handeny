@@ -10,7 +10,9 @@
                 <?php wp_nav_menu(['menu' => 'main-menu',]); ?>
             </div>
             <div class="header__login">
-                <?php _e('Login / Register');?>
+                <a href="<?php echo esc_url(wp_login_url());?>">
+                    <?php _e('Login / Register');?>
+                </a>
             </div>
             <div class="header__search">
                 <?php get_search_form(); ?>

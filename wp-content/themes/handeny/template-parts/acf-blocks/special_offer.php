@@ -26,7 +26,7 @@
                             <?php echo $special_upper_text; ?>
                         </div>
                         <div class="special__title heading__title">
-                            <h1 class="h2"><?php echo $special_title; ?></h1>
+                            <h2><?php echo $special_title; ?></h2>
                         </div>
                     </div>
                     <?php if ($special_button) : ?>

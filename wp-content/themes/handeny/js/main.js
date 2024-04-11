@@ -64,8 +64,8 @@ jQuery(document).ready(function ($) {
 
             slider.on('setPosition', function () {
                 $(this).find('.card').height('auto');
-                var slickTrack = $(this).find('.slick-track');
-                var slickTrackHeight = $(slickTrack).height();
+                let slickTrack = $(this).find('.slick-track');
+                let slickTrackHeight = $(slickTrack).height();
                 $(this).find('.card').css('height', slickTrackHeight + 'px');
             });
         });
@@ -103,11 +103,33 @@ jQuery(document).ready(function ($) {
 
     toggleCart();
 
+    function updatedCart() {
+        $.ajax({
+            type: 'GET',
+            url: customjs_ajax_object.ajax_url,
+            data: {
+                action: 'get_cart_count_and_total'
+            },
+            success: function (response) {
+                const data = JSON.parse(response);
+
+                $('.header__cart-icon .quantity').text(data.count);
+                $('.header__cart-total-price').html(data.total);
+            }
+        })
+    }
+
+    let isAdd = false;
+
     function addToCart() {
         $(document).on('click', '.js-add-to-cart', function (e) {
             e.preventDefault();
 
-            var product_id = $(this).data('product-id');
+            if (isAdd) return;
+
+            isAdd = true;
+
+            const product_id = $(this).data('product-id');
 
             $.ajax({
                 type: 'POST',
@@ -118,8 +140,11 @@ jQuery(document).ready(function ($) {
                 },
                 success: function (response) {
                     $('.side-cart .side-cart__menu').html(response);
-
                     $('.side-cart').addClass('cart--open');
+                    updatedCart();
+                },
+                complete: function () {
+                    isAdd = false;
                 }
             });
         })
@@ -127,17 +152,17 @@ jQuery(document).ready(function ($) {
 
     addToCart();
 
-    var isProcessing = false
+    let isRemove = false;
 
     function removeFromCart() {
         $(document).on('click', '.remove_from_cart_button', function (e) {
             e.preventDefault();
 
-            if (isProcessing) return;
+            if (isRemove) return;
 
-            isProcessing = true;
+            isRemove = true;
 
-            var product_id = $(this).data('product-id');
+            const product_id = $(this).data('product-id');
 
             $.ajax({
                 type: 'POST',
@@ -148,15 +173,65 @@ jQuery(document).ready(function ($) {
                 },
                 success: function (response) {
                     $('.side-cart .side-cart__menu').html(response);
+                    updatedCart();
                 },
                 complete: function () {
-                    isProcessing = false;
+                    isRemove = false;
                 }
             });
         })
     }
 
     removeFromCart();
+
+    function changeQty() {
+        $(document).on('click', '.quantity-button', function () {
+            const btn = $(this);
+            const prod_id = $(this).data('prod-id');
+            const input = $(this).closest('.mini-cart-item__btn').find('input');
+
+            if(btn.hasClass('plus')) {
+                let newQuantity = parseInt(input.val()) + 1;
+
+                input.val(newQuantity);
+
+                updateQuantity(prod_id, newQuantity);
+            } else if(btn.hasClass('minus')) {
+                let newQuantity = parseInt(input.val()) - 1;
+
+                if (newQuantity < 1) {
+                    newQuantity = 1;
+                }
+
+                input.val(newQuantity);
+
+                updateQuantity(prod_id, newQuantity);
+            }
+        })
+    }
+
+    changeQty();
+
+    function updateQuantity(productId, newQuantity) {
+        const id = productId;
+        const qty = newQuantity;
+
+        jQuery.ajax({
+            type: 'POST',
+            url: customjs_ajax_object.ajax_url,
+            data: {
+                action: 'update_quantity',
+                id: id,
+                qty: qty
+            },
+            success: function(response) {
+                console.log(response)
+            },
+            error: function (e) {
+                console.log(e)
+            }
+        });
+    }
 
     function search() {
         $(document).on('click', '.js-search', function (e) {

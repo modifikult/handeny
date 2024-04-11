@@ -859,13 +859,16 @@ input[type="search"]::-ms-reveal {
 }
 
 .header__login {
+    margin-right: 129px;
+    height: 20px;
+    line-height: 20px;
+}
+
+.header__login a {
     font-family: "Marcellus", serif;
     font-size: var(--font-size-3);
     text-transform: uppercase;
     color: var(--color-white);
-    margin-right: 129px;
-    height: 20px;
-    line-height: 20px;
 }
 
 .header__search {
@@ -1916,7 +1919,7 @@ input[type="search"]::-ms-reveal {
     padding: 0;
     margin: 0;
     width: 100%;
-    height: 250px;
+    height: fit-content;
     overflow-y: auto;
 }
 
@@ -2317,6 +2320,10 @@ input[type="search"]::-ms-reveal {
     .container {
         padding-left: 15px;
         padding-right: 15px;
+    }
+
+    .hero--bg img {
+        object-position: 70%;
     }
 
     .store__wrap {

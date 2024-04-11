@@ -53,7 +53,7 @@
                 [
                     'taxonomy' => 'product_tag',
                     'field' => 'slug',
-                    'terms' => 'featured-products',
+                    'terms' => 'new-products',
                     'operator' => 'IN'
                 ]
             ]

@@ -58,7 +58,10 @@
                                 <?php echo wp_kses_post($product_name); ?>
                             </div>
                             <div class="mini-cart-item__btn">
-                            
+                                <?php echo wc_get_formatted_cart_item_data($cart_item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                                <input type="number" name="quantity" value="<?php echo $cart_item['quantity']; ?>" min="1" step="1" class="input-text qty text" size="4">
+                                <button type="button" class="quantity-button plus" data-prod-id="<?php echo $product_id; ?>">+</button>
+                                <button type="button" class="quantity-button minus" data-prod-id="<?php echo $product_id; ?>">-</button>
                             </div>
                             <div class="mini-cart-item__quantity">
                                 <?php echo wc_get_formatted_cart_item_data($cart_item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

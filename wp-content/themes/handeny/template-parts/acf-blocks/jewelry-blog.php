@@ -15,11 +15,11 @@
         
         $args = [
             'post_type' => 'post',
-            'status' => 'publish',
+            'post_status' => 'publish',
             'orderby' => 'date',
             'order' => 'ASC',
             'posts_per_page' => -1,
-            'include' => $post_ids,
+            'post__in' => $post_ids,
         ];
         
         $query = new WP_Query($args);
